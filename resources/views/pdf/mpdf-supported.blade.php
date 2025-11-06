@@ -19,10 +19,17 @@
             font-style: normal;
         }
 
+         @font-face {
+            font-family: 'arial';
+            src: url('{{ asset('assets/fonts/ARIAL.TTF') }}') format('ttf');
+            font-weight: normal;
+            font-style: normal;
+        }
+
         body {
-            font-family: times;
+            font-family: arial;
             font-size: 12px;
-            line-height: 1.5;
+            line-height: 1;
             color: #000;
         }
 

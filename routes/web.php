@@ -6,7 +6,15 @@ use Livewire\Volt\Volt;
 
 
     Volt::route('/', 'auth.login')->name('home');
+Route::get('/download-notice/{filename}', function($filename) {
+    $path = storage_path('app/public/notices/word/' . $filename);
 
+    if (!file_exists($path)) {
+        abort(404, 'File not found');
+    }
+
+    return response()->download($path);
+})->name('notice.download');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])

@@ -266,7 +266,7 @@ new class extends Component {
                 </span>
             </div>
             @if(!empty($selectedApplications))
-                    <div>
+                    {{---<div>
                         <form target="__blank" method="POST" action="{{ route('print.schedule') }}">
                             @csrf
                             @method('POST')
@@ -274,14 +274,14 @@ new class extends Component {
                             <input type="hidden" name="selectedApplications" value="{{ json_encode($this->selectedApplications) }}"/>
                             <x-button primary type="submit">Print Schedules</x-button>
                         </form>
-                    </div>
+                    </div>--}}
                     <div>
                         <form target="__blank" method="POST" action="{{ route('print.schedule.mpdf') }}">
                             @csrf
                             @method('POST')
                             <input type="hidden" name="meetingDate" value="{{ $this->meetingDate }}" />
                             <input type="hidden" name="selectedApplications" value="{{ json_encode($this->selectedApplications) }}"/>
-                            <x-button primary type="submit">Print Schedules MPDF</x-button>
+                            <x-button primary type="submit">Print Schedules</x-button>
                         </form>
                     </div>
                     <div>

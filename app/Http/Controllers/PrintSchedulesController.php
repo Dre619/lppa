@@ -19,7 +19,7 @@ use PhpOffice\PhpWord\SimpleType\JcTable;
 
 class PrintSchedulesController extends Controller
 {
-   public function index(Request $request)
+  public function index(Request $request)
 {
     $selectedApplications = json_decode($request->input('selectedApplications'), true);
     $meetingDate = $request->input('meetingDate');
@@ -51,33 +51,30 @@ class PrintSchedulesController extends Controller
     $options = new Options();
     $options->set('isHtml5ParserEnabled', true);
     $options->set('isPhpEnabled', true);
-    $options->set('defaultFont','times');
-    $options->set('defaultPaperSize','a4');
+    $options->set('defaultFont', 'arial'); // Changed to lowercase
+    $options->set('defaultPaperSize', 'a4');
     $options->set('chroot', public_path());
 
     $pdf = new Dompdf($options);
-    $pdf->setPaper('A4','landscape');
-
+    $pdf->setPaper('A4', 'landscape');
     $data['pdf'] = $pdf;
-    $font = $pdf->getFontMetrics()->get_font('times', 'normal');
-    $size = 11;
-    $data['font'] = $font;
-    $data['size'] = $size;
-    $data['y'] = $pdf->getCanvas()->get_height() - 20;
-    $data['x'] = $pdf->getCanvas()->get_width() - 15 - $pdf->getFontMetrics()->get_text_width('1/1', $font, $size);
 
-    $html = view('pdf.planning_applications', $data)->render(); // 👈 render the blade properly
-
+    // ✅ Load and render HTML FIRST before trying to access canvas
+    $html = view('pdf.planning_applications', $data)->render();
     $pdf->loadHtml($html);
     $pdf->render();
 
-    // Add page numbers
+    // ✅ NOW access canvas after rendering
     $canvas = $pdf->getCanvas();
+    $font = $pdf->getFontMetrics()->getFont('arial', 'normal');
+    $size = 11;
+
     $y = $canvas->get_height() - 45;
     $x = $canvas->get_width() - 430 - $pdf->getFontMetrics()->get_text_width('1/1', $font, $size);
-    $canvas->page_text($x, $y, substr($applications->first()->applicationClassification->reg_key,0,3).': {PAGE_NUM}/{PAGE_COUNT}', $font, $size);
 
-    // ✅ Correct way to return in Laravel
+    $canvas->page_text($x, $y, substr($applications->first()->applicationClassification->reg_key, 0, 3) . ': {PAGE_NUM}/{PAGE_COUNT}', $font, $size);
+
+    // ✅ Return PDF response
     return response($pdf->output(), 200)
         ->header('Content-Type', 'application/pdf')
         ->header('Content-Disposition', 'inline; filename="planning_applications.pdf"');

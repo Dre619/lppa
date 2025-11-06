@@ -24,12 +24,16 @@
 <body>
   <div style="margin: 20px;">
     <h2>Generated Notice Document</h2>
-    
-    <iframe class="doc-frame" src="https://docs.google.com/gview?url={{ asset('storage/'.$output) }}&embedded=true"></iframe>
 
-    <p>
-      <a class="btn" href="ms-word:ofe|u|{{ asset('storage/'.$output) }}" download>Open in MS-Word</a>
+    <iframe class="doc-frame"
+            src="https://docs.google.com/gview?url={{ urlencode(url('storage/' . $output)) }}&embedded=true"
+            width="100%"
+            height="600px">
+    </iframe>
+
+     <p>
+        <a class="btn" href="{{ route('notice.download', basename($output)) }}">Download Document</a>
     </p>
-  </div>
+</div>
 </body>
 </html>

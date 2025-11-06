@@ -11,14 +11,14 @@
         }
 
         @font-face {
-            font-family: 'times';
-            src: url('{{ asset('assets/fonts/times.ttf') }}') format('ttf');
+            font-family: 'arial';
+            src: url('{{ asset('assets/fonts/ARIAL.TTF') }}') format('truetype');
             font-weight: normal;
             font-style: normal;
         }
 
         body {
-            font-family: times;
+            font-family: arial;
             margin: 20px;
             font-size: 12px;
             line-height: 1.5;
@@ -81,7 +81,7 @@
     <h2 style="margin-bottom: -20px;">SCHEDULE OF APPLICATIONS FOR PLANNING PERMISSION TO DEVELOPMENT LAND</h2>
     <h2>FOR THE MEETING OF {{ $meetingDate }}</h2>
 
-    <table>
+    <table style="font-family: Arial;">
         <thead>
             <tr>
                 <th>No.</th>
@@ -125,6 +125,5 @@
             @endforeach
         </tbody>
     </table>
-<center><span class="pagenumx">{{$pdf->getCanvas()->page_text($x, $y, '{PAGE_NUM}/{PAGE_COUNT}', $font, $size)}}</span></center>
 </body>
 </html>
